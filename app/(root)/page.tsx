@@ -1,12 +1,20 @@
 import Header from "@/components/Header";
 import VideoCard from "@/components/VideoCard";
+import { dummyCards } from "@/constants";
 import React from "react";
 
 const Page = () => {
   return (
     <main className="wrapper page">
       <Header title="All Videos" subHeader="Public Library" />
-      <VideoCard
+
+<section className="video-grid">
+  {dummyCards.map((card) => (
+  <VideoCard key={card.id} {...card} />
+))}
+</section>
+
+      {/* <VideoCard
         id="1"
         title="Snacast Message"
         thumbnail="/assets/samples/thumbnail2.png"
@@ -16,7 +24,7 @@ const Page = () => {
         views={10}
         visibility="public"
         duration={156}
-      />
+      /> */}
     </main>
   );
 };

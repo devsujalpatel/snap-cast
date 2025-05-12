@@ -490,7 +490,7 @@
     @apply flex flex-col rounded-2xl w-full border border-gray-20 aspect-[16/9] relative;
 
     .thumbnail {
-      @apply w-full h-full rounded-t-2xl object-cover h-[190px];
+      @apply w-full rounded-t-2xl object-cover h-[190px];
     }
 
     article {
