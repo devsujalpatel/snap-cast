@@ -1,0 +1,6 @@
+{
+  "databaseURL": "https://Sujal-Patel-s-workspace-pngvqh.eu-central-1.xata.sh/db/SnapCast",
+  "codegen": {
+    "output": "src/xata.ts"
+  }
+}
