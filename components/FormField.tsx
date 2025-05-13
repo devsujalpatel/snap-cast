@@ -8,18 +8,36 @@ const FormField = ({
   as = "input",
   options = [],
 }: FormFieldProps) => {
-    const InputToRender = ({type}: {type: string}) => {
-        if(type === 'textarea') {
-            return <textarea />
-        } else if(type === 'select'){
-            return <select />
-        } else {
-            return <input />
-        }
-    }
-  return <div className="form-filed">
+  return (
+     <div className="form-field">
     <label htmlFor={id}>{label}</label>
-    <InputToRender type={as} />
-  </div>;
+    {as === "textarea" ? (
+      <textarea
+        id={id}
+        name={id}
+        value={value}
+        onChange={onChange}
+        placeholder={placeholder}
+      />
+    ) : as === "select" ? (
+      <select id={id} name={id} value={value} onChange={onChange}>
+        {options.map((option) => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </select>
+    ) : (
+      <input
+        type={type}
+        id={id}
+        name={id}
+        value={value}
+        onChange={onChange}
+        placeholder={placeholder}
+      />
+    )}
+  </div>
+  );
 };
 export default FormField;
