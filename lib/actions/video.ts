@@ -92,6 +92,7 @@ export const getThumbnailUploadUrl = withErrorHandling(
 
 export const saveVideoDetails = withErrorHandling(
   async (videoDetails: VideoDetails) => {
+    console.log("Video Dtails", {...videoDetails})
     const userId = await getSessionUserId();
     await validateWithArcjet(userId);
     await apiFetch(
@@ -107,6 +108,8 @@ export const saveVideoDetails = withErrorHandling(
     );
 
     const now = new Date();
+    console.log({...videoDetails}, "Nothing");
+    
     await db.insert(videos).values({
       ...videoDetails,
       videoUrl: `${BUNNY.EMBED_URL}/${BUNNY_LIBRARY_ID}/${videoDetails.videoId}`,
@@ -237,18 +240,18 @@ export const getAllVideosByUser = withErrorHandling(
   }
 );
 
-export const updateVideoVisibility = withErrorHandling(
-  async (videoId: string, visibility: Visibility) => {
-    await validateWithArcjet(videoId);
-    await db
-      .update(videos)
-      .set({ visibility, updatedAt: new Date() })
-      .where(eq(videos.videoId, videoId));
+// export const updateVideoVisibility = withErrorHandling(
+//   async (videoId: string, visibility: Visibility) => {
+//     await validateWithArcjet(videoId);
+//     await db
+//       .update(videos)
+//       .set({ visibility, updatedAt: new Date() })
+//       .where(eq(videos.videoId, videoId));
 
-    revalidatePaths(["/", `/video/${videoId}`]);
-    return {};
-  }
-);
+//     revalidatePaths(["/", `/video/${videoId}`]);
+//     return {};
+//   }
+// );
 
 export const getVideoProcessingStatus = withErrorHandling(
   async (videoId: string) => {

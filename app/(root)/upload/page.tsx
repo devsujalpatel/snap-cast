@@ -91,7 +91,7 @@ const UploadPage = () => {
   const { name, value } = e.target;
   setFormData((prev) => ({
     ...prev,
-    [name]: name === "visibility" ? value as "public" | "private" : value, // 👈 enforce literal
+    [name]: name === "visibility" ? value as "public" | "private" : value, 
   }));
 };
 
@@ -138,7 +138,7 @@ const UploadPage = () => {
         thumbnailAccessKey
       );
 
-  
+console.log("Runs here 1")  
 
 await saveVideoDetails({
   videoId,
@@ -146,7 +146,7 @@ await saveVideoDetails({
   ...formData,
   duration: videoDuration,
 });
-
+console.log("Runs here 2")
 
 
       router.push(`/video/${videoId}`);
