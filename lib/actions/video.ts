@@ -79,7 +79,7 @@ export const getThumbnailUploadUrl = withErrorHandling(
 export const savedVideoDetails = withErrorHandling(
   async (videoDetails: VideoDetails) => {
     const userId = await getSessionUserId();
-
+    await validateWithArcjet(userId)
     await apiFetch(
       `${VIDEO_STREAM_BASE_URL}/${BUNNY_LIBRARY_ID}/video/${videoDetails.videoId}`,
       {
