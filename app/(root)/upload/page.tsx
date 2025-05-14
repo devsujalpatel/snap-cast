@@ -4,13 +4,14 @@ import { useState, FormEvent, ChangeEvent, useEffect } from "react";
 import {
   getVideoUploadUrl,
   getThumbnailUploadUrl,
-  savedVideoDetails,
+  saveVideoDetails,
 } from "@/lib/actions/video";
 import { useRouter } from "next/navigation";
-import FileInput from "@/components/FileInput";
+
 import { useFileInput } from "@/lib/hooks/useFileInput";
 import { MAX_THUMBNAIL_SIZE, MAX_VIDEO_SIZE } from "@/constants";
 import FormField from "@/components/FormField";
+import FileInput from "@/components/FileInput";
 
 const uploadFileToBunny = (
   file: File,
@@ -44,7 +45,7 @@ const UploadPage = () => {
   const thumbnail = useFileInput(MAX_THUMBNAIL_SIZE);
 
   useEffect(() => {
-    if (video.duration !== null || 0) {
+    if (video.duration !== null) {
       setVideoDuration(video.duration);
     }
   }, [video.duration]);
@@ -84,12 +85,16 @@ const UploadPage = () => {
     checkForRecordedVideo();
   }, [video]);
 
-  const handleInputChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-  ) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
+ const handleInputChange = (
+  e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+) => {
+  const { name, value } = e.target;
+  setFormData((prev) => ({
+    ...prev,
+    [name]: name === "visibility" ? value as "public" | "private" : value, // 👈 enforce literal
+  }));
+};
+
 
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -133,12 +138,16 @@ const UploadPage = () => {
         thumbnailAccessKey
       );
 
-      await savedVideoDetails({
-        videoId,
-        thumbnailUrl: thumbnailCdnUrl,
-        ...formData,
-        duration: videoDuration,
-      });
+  
+
+await saveVideoDetails({
+  videoId,
+  thumbnailUrl: thumbnailCdnUrl,
+  ...formData,
+  duration: videoDuration,
+});
+
+
 
       router.push(`/video/${videoId}`);
     } catch (error) {

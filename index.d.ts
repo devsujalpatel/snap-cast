@@ -118,7 +118,6 @@ declare interface VideoDetails {
   title: string;
   description: string;
   thumbnailUrl: string;
-  visibility: Visibility;
   duration?: number | null;
 }
 

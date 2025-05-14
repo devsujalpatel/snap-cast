@@ -1,36 +1,49 @@
 "use client";
 import Image from "next/image";
+import ImageWithFallback from "./ImageWithFallback";
 import Link from "next/link";
+import { useState } from "react";
 
 const VideoCard = ({
   id,
   title,
   thumbnail,
-  createdAt,
   userImg,
   username,
+  createdAt,
   views,
   visibility,
   duration,
 }: VideoCardProps) => {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    e.preventDefault();
+    navigator.clipboard.writeText(`${window.location.origin}/video/${id}`);
+    setCopied(true);
+    setTimeout(() => {
+      setCopied(false);
+    }, 3000);
+  };
+
   return (
     <Link href={`/video/${id}`} className="video-card">
       <Image
         src={thumbnail}
-        alt="thumbnail"
-        width={260}
+        width={290}
         height={160}
+        alt="thumbnail"
         className="thumbnail"
       />
-
       <article>
         <div>
           <figure>
-            <Image
-              src={userImg || 'assets/images/dummy.jpg'}
-              alt="avatar"
+            <ImageWithFallback
+              src={userImg}
               width={34}
               height={34}
+              alt="avatar"
               className="rounded-full aspect-square"
             />
             <figcaption>
@@ -50,15 +63,22 @@ const VideoCard = ({
         </div>
         <h2>
           {title} -{" "}
-          {createdAt.toLocaleDateString("en-IN", {
+          {createdAt.toLocaleDateString("en-US", {
             year: "numeric",
             month: "short",
             day: "numeric",
           })}
         </h2>
       </article>
-      <button onClick={() => {}} className="copy-btn">
-        <Image src="/assets/icons/link.svg" alt="copy" width={18} height={18} />
+      <button onClick={handleCopy} className="copy-btn">
+        <Image
+          src={
+            copied ? "/assets/icons/checkmark.svg" : "/assets/icons/link.svg"
+          }
+          alt="Copy Link"
+          width={18}
+          height={18}
+        />
       </button>
       {duration && (
         <div className="duration">{Math.ceil(duration / 60)}min</div>
@@ -66,4 +86,5 @@ const VideoCard = ({
     </Link>
   );
 };
+
 export default VideoCard;
